@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -83,35 +84,50 @@ func (p *Procs) GetProcesses(procsTracked []BaseProcess) []BaseProcess {
 		}
 	}
 
+	sort.Slice(newProcsTracked, func(i, j int) bool {
+		return newProcsTracked[i].DisplayName[0] < newProcsTracked[j].DisplayName[0]
+	})
+
 	return newProcsTracked
 }
 
-func (p *Procs) VerifyProcessesState(procsTracked []BaseProcess) {
+func (p *Procs) VerifyProcessesState(procsTracked []BaseProcess) []BaseProcess {
 	processes, err := process.Processes()
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	for _, proc := range processes {
+	var newProcsTracked = procsTracked
+
+	for index, procTracked := range newProcsTracked {
 		found := false
 
-		name, _ := proc.Name()
+		for index, proc := range processes {
+			name, _ := proc.Name()
 
-		if len(name) > 0 {
-			for _, procTracked := range procsTracked {
+			if len(name) > 0 {
 				if procTracked.Name == name {
 					found = true
+					break
 				}
 
-				if !found {
-					procTracked.EndAt = time.Now()
+				if index == len(processes)-1 && !found {
+					found = false
 				}
 			}
 		}
 
+		if !found {
+			newProcsTracked[index].EndAt = time.Now()
+			newProcsTracked[index].Ended = true
+		} else {
+			newProcsTracked[index].EndAt = time.Time{}
+			newProcsTracked[index].Ended = false
+		}
 	}
 
+	return newProcsTracked
 }
 
 func (p *Procs) FormatProcessDisplayName(name string) string {

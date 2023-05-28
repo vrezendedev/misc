@@ -6,4 +6,4 @@ export function FormatProcessDisplayName(arg1:string):Promise<string>;
 
 export function GetProcesses(arg1:Array<procs.BaseProcess>):Promise<Array<procs.BaseProcess>>;
 
-export function VerifyProcessesState(arg1:Array<procs.BaseProcess>):Promise<void>;
+export function VerifyProcessesState(arg1:Array<procs.BaseProcess>):Promise<Array<procs.BaseProcess>>;

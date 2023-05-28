@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
+
+:root {
+    --dark_purple: rgb(30, 24, 54);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 10px;
+}
+
+#App {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+.running-processes {
+    width: 650px;
+    height: 700px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.cards-div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: absolute;
+    height: 705px;
+    width: 683px;
+    padding: 2px;
+    overflow-y: scroll;
+    justify-content: center;
+    align-items: center;
+}
+
+.gopher-pic {
+    object-fit: cover;
+    object-position: 100% 0;
+    transform: scaleY(-1) scaleX(-1);
+    height: 50px;
+    width: 200px;
+    position: absolute;
+    top: 0.5%;
+    left: 60%;
+}
+
+#tracked-processes {
+    position: absolute;
+    top: 27%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 325px 20%;
+}
+
+#search-and-more {
+    position: absolute;
+    top: 1%;
+    width: 96%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    margin: 5px;
+    margin-top: 0px;
+    padding: 10px;
+    width: 100%;
+
+    font-family: 'Roboto', sans-serif;
+    text-align: left;
+    font-size: 1.5rem;
+    color: white;
+
+    background: rgb(83, 43, 112);
+    background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0.3) 30%,
+        var(--dark_purple) 80%
+    );
+
+    border-left: 5px solid black;
+    border-bottom: 2px solid;
+    border-top: 2px solid;
+    border-image: linear-gradient(0.25turn, black 15%, var(--dark_purple) 50%);
+    border-image-slice: 1;
+}
+
+.label-text-input {
+    width: 40px;
+    margin-right: 10px;
+    font-family: 'Roboto', sans-serif;
+    text-align: left;
+    font-size: 0.8rem;
+    color: white;
+}
+
+.text-input {
+    width: 250px;
+    font-family: 'Roboto', sans-serif;
+    text-align: left;
+    font-size: 0.8rem;
+    color: white;
+    background-color: var(--dark_purple);
+    border: 1px solid white;
+    border-radius: 6px;
+}
+
+.buttons {
+    margin: 30px;
+    margin-bottom: 15px;
+    width: 150px;
+    height: 50px;
+
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid black;
+    border-left: 4px solid black;
+    border-right: 4px solid black;
+
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.buttons:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.card {
+    margin: 5px;
+    height: 120px;
+    width: 300px;
+
+    display: flex;
+    flex-direction: row;
+
+    background: rgb(83, 43, 112);
+    background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0.3) 90%,
+        var(--dark_purple) 100%
+    );
+
+    border-left: 5px solid black;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(0.25turn, black 40%, var(--dark_purple) 80%);
+    border-image-slice: 1;
+}
+
+.card-image-div {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    padding-right: 30px;
+    padding-left: 10px;
+}
+
+.card-image {
+    height: 50px;
+    width: 50px;
+    filter: drop-shadow(5px 2px 3px rgba(0, 0, 0, 1));
+}
+
+.card-text {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    color: white;
+    margin-right: 30px;
+    word-wrap: break-word;
+}
