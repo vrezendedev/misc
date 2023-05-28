@@ -5,7 +5,7 @@ import { procs } from '../wailsjs/go/models';
 import ProcessCard from './ProcessCard';
 
 import './style.css';
-import gopher from './../public/gopher.png';
+import gopher from './gopher.png';
 
 function App() {
     const [processes, setProcesses] = useState<Array<procs.BaseProcess>>(
@@ -59,15 +59,17 @@ function App() {
                     <div style={{ marginRight: '40px' }}>
                         <button
                             className="buttons"
-                            onClick={async () => await GetRunningProcesses()}
+                            onClick={async () => {
+                                await GetRunningProcesses();
+                            }}
                         >
-                            Refresh All Processes Running!
+                            Add New and Refresh Processes!
                         </button>
                         <button
                             className="buttons"
                             onClick={async () => await VerifyRunningState()}
                         >
-                            Force Process State Tracking!
+                            Force Refresh State from Processes List!
                         </button>
                     </div>
                 </div>

@@ -151,7 +151,7 @@
     background: linear-gradient(
         90deg,
         rgba(0, 0, 0, 0.3) 0%,
-        rgba(0, 0, 0, 0.3) 90%,
+        rgba(0, 0, 0, 0.3) 60%,
         var(--dark_purple) 100%
     );
 

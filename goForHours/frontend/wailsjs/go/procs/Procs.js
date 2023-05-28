@@ -10,6 +10,10 @@ export function GetProcesses(arg1) {
   return window['go']['procs']['Procs']['GetProcesses'](arg1);
 }
 
+export function SetContext(arg1) {
+  return window['go']['procs']['Procs']['SetContext'](arg1);
+}
+
 export function VerifyProcessesState(arg1) {
   return window['go']['procs']['Procs']['VerifyProcessesState'](arg1);
 }

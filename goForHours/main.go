@@ -1,8 +1,10 @@
 package main
 
 import (
+	"context"
 	"embed"
-	procs "goForHours/services"
+	procs "goForHours/services/procs"
+	procsDal "goForHours/services/procsDal"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -16,6 +18,7 @@ func main() {
 	// Create an instance of the app structure
 	app := NewApp()
 	proc := procs.NewProcs()
+	pD := procsDal.NewProcsDal()
 
 	// Create application with options
 	err := wails.Run(&options.App{
@@ -27,10 +30,15 @@ func main() {
 			Assets: assets,
 		},
 		BackgroundColour: &options.RGBA{R: 30, G: 24, B: 54, A: 1},
-		OnStartup:        app.startup,
+		OnStartup: func(ctx context.Context) {
+			app.SetContext(ctx)
+			proc.SetContext(ctx)
+			pD.SetContext(ctx)
+		},
 		Bind: []interface{}{
 			app,
 			proc,
+			pD,
 		},
 	})
 

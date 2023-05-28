@@ -32,7 +32,7 @@ func NewProcs() *Procs {
 	return &Procs{}
 }
 
-func (p *Procs) startup(ctx context.Context) {
+func (p *Procs) SetContext(ctx context.Context) {
 	p.ctx = ctx
 }
 
@@ -88,7 +88,7 @@ func (p *Procs) GetProcesses(procsTracked []BaseProcess) []BaseProcess {
 		return newProcsTracked[i].DisplayName[0] < newProcsTracked[j].DisplayName[0]
 	})
 
-	return newProcsTracked
+	return p.VerifyProcessesState(newProcsTracked)
 }
 
 func (p *Procs) VerifyProcessesState(procsTracked []BaseProcess) []BaseProcess {
