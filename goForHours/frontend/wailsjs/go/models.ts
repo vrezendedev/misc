@@ -45,3 +45,28 @@ export namespace procs {
 
 }
 
+export namespace procsDal {
+	
+	export class TrackedProcess {
+	    name: string;
+	    displayName: string;
+	    minutesOn: number;
+	    updateAt: string;
+	    stillRunning: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new TrackedProcess(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.displayName = source["displayName"];
+	        this.minutesOn = source["minutesOn"];
+	        this.updateAt = source["updateAt"];
+	        this.stillRunning = source["stillRunning"];
+	    }
+	}
+
+}
+

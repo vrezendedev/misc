@@ -151,13 +151,12 @@
     background: linear-gradient(
         90deg,
         rgba(0, 0, 0, 0.3) 0%,
-        rgba(0, 0, 0, 0.3) 60%,
-        var(--dark_purple) 100%
+        rgba(0, 0, 0, 0.3) 100%
     );
 
     border-left: 5px solid black;
-    border-bottom: 2px solid;
-    border-image: linear-gradient(0.25turn, black 40%, var(--dark_purple) 80%);
+    border-bottom: 3px solid;
+    border-image: linear-gradient(0.25turn, black 40%, var(--dark_purple) 90%);
     border-image-slice: 1;
 }
 
@@ -178,7 +177,16 @@
 .card-text {
     font-family: 'Roboto', sans-serif;
     font-size: 1rem;
+    line-height: 0.4rem;
     color: white;
     margin-right: 30px;
     word-wrap: break-word;
+}
+
+.card-text-medium {
+    font-size: 0.8rem;
+}
+
+.card-text-small {
+    font-size: 0.6rem;
 }

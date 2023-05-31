@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { GetAllTrackedProcess } from '../wailsjs/go/procsDal/ProcsDal';
 import { GetProcesses, VerifyProcessesState } from '../wailsjs/go/procs/Procs';
-import { procs } from '../wailsjs/go/models';
+
+import { procs, procsDal } from '../wailsjs/go/models';
 
 import ProcessCard from './ProcessCard';
 
@@ -14,9 +16,26 @@ function App() {
     const [filter, setFilter] = useState<string>('');
 
     async function GetRunningProcesses() {
-        await GetProcesses(processes).then((result) => {
+        await GetProcesses(processes).then(async (result) => {
+            let alreadyTracked = await GetTrackedProcesses();
+
+            if (alreadyTracked != null) {
+                result = result.filter((obj) => {
+                    let found = alreadyTracked.some(
+                        (element) => element.displayName == obj.displayName
+                    );
+                    return found ? null : obj;
+                });
+            }
+
             setProcesses(result);
         });
+    }
+
+    async function GetTrackedProcesses(): Promise<
+        Array<procsDal.TrackedProcess>
+    > {
+        return await GetAllTrackedProcess();
     }
 
     async function VerifyRunningState() {
@@ -63,7 +82,7 @@ function App() {
                                 await GetRunningProcesses();
                             }}
                         >
-                            Add New and Refresh Processes!
+                            Add New and Refresh Processes State!
                         </button>
                         <button
                             className="buttons"
@@ -83,9 +102,9 @@ function App() {
                         )
                             return (
                                 <ProcessCard
-                                    procName={obj.displayName}
+                                    {...obj}
                                     image={gopher}
-                                    stillRunning={obj.ended ? false : true}
+                                    convertValues={() => {}}
                                     key={obj.displayName}
                                 />
                             );

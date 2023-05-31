@@ -118,10 +118,12 @@ func (p *Procs) VerifyProcessesState(procsTracked []BaseProcess) []BaseProcess {
 			}
 		}
 
-		if !found {
+		nullableTime := time.Time{}
+
+		if !found && nullableTime.Equal(newProcsTracked[index].EndAt) {
 			newProcsTracked[index].EndAt = time.Now()
 			newProcsTracked[index].Ended = true
-		} else {
+		} else if found {
 			newProcsTracked[index].EndAt = time.Time{}
 			newProcsTracked[index].Ended = false
 		}
