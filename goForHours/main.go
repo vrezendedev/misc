@@ -5,15 +5,19 @@ import (
 	"embed"
 	procs "goForHours/services/procs"
 	procsDal "goForHours/services/procsDal"
+	"goForHours/services/tasks"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 )
 
+//go:embed all:frontend/dist
 var assets embed.FS
 
 func main() {
+
+	tasks.VerifyAndCreateTask()
 
 	app := NewApp()
 	proc := procs.NewProcs()

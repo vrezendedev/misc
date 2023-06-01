@@ -1,6 +1,7 @@
 package procsDal
 
 import (
+	"C"
 	"context"
 	"database/sql"
 	"fmt"
