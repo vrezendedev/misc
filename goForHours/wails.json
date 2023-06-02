@@ -9,5 +9,12 @@
     "author": {
         "name": "Rezende",
         "email": "rezendedev@gmail.com"
-    }
+    },
+    "info": {
+        "productName": "Go For Hours",
+        "companyName": "Wise Shepherd Softwares",
+        "comments": "Track the hours you spent using your favorite softwares in Windows!",
+        "productVersion": "1.0.0"
+    },
+    "version": "2"
 }

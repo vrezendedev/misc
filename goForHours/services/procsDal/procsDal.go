@@ -1,7 +1,6 @@
 package procsDal
 
 import (
-	"C"
 	"context"
 	"database/sql"
 	"fmt"
@@ -68,7 +67,9 @@ func (p *ProcsDal) CreateOrLoadDatabase() {
 	database, err := sql.Open("sqlite3", folderPlusFile)
 
 	if err == nil {
-		statement, _ := database.Prepare("CREATE TABLE IF NOT EXISTS tracked_processes (name text, displayName text primary key, minutesOn UNSIGNED BIG INT, updatedAt text, stillRunning boolean)")
+		statement, _ := database.Prepare("CREATE TABLE IF NOT EXISTS tracked_processes (name text primary key, displayName text, minutesOn UNSIGNED BIG INT, updatedAt text, stillRunning boolean)")
+		statement.Exec()
+		statement, _ = database.Prepare("CREATE TABLE IF NOT EXISTS tracked_processes_images (name text PRIMARY KEY, image blob);")
 		statement.Exec()
 	}
 
@@ -105,4 +106,29 @@ func (p *ProcsDal) GetAllTrackedProcess() []TrackedProcess {
 	}
 
 	return trackedProcesses
+}
+
+func (p *ProcsDal) UpdateTrackedProcessName(tp TrackedProcess) bool {
+	statement, _ := p.DATABASE_CTX.Prepare("UPDATE tracked_processes SET displayname = ? WHERE name = ?")
+	_, err := statement.Exec(tp.DisplayName, tp.Name)
+
+	if err != nil {
+		return false
+	} else {
+		return true
+	}
+}
+
+func (p *ProcsDal) InsertOrUpdateNewTrackedProcessImage(appName string, image []byte) bool {
+	statement, _ := p.DATABASE_CTX.Prepare("DELETE FROM tracked_processes_images WHERE name = ?")
+	statement.Exec(appName)
+
+	statement, _ = p.DATABASE_CTX.Prepare("INSERT INTO tracked_processes_images (name, image) VALUES (?, ?)")
+	_, err := statement.Exec(appName, image)
+
+	if err != nil {
+		return false
+	} else {
+		return true
+	}
 }

@@ -1,7 +1,9 @@
 package tasks
 
 import (
+	"os"
 	"os/user"
+	"path/filepath"
 	"time"
 
 	"github.com/capnspacehook/taskmaster"
@@ -16,9 +18,15 @@ func VerifyAndCreateTask() {
 		return
 	}
 
+	ex, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	exPath := "\"" + filepath.Dir(ex) + "\\goForHoursTracker.exe" + "\""
+
 	us, _ := user.Current()
 
-	var _ = tasks.Create("goForHoursTracker", "\"C:\\Program Files (x86)\\Steam\\steam.exe\"", "", "goForHoursTracker", us.Username, taskmaster.TimeTrigger{
+	var _ = tasks.Create("goForHoursTracker", exPath, "", "goForHoursTracker", us.Username, taskmaster.TimeTrigger{
 		TaskTrigger: taskmaster.TaskTrigger{
 			Enabled:       true,
 			ID:            "startup",

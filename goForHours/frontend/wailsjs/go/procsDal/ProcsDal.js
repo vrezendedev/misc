@@ -18,10 +18,18 @@ export function InsertNewTrackedProcess(arg1) {
   return window['go']['procsDal']['ProcsDal']['InsertNewTrackedProcess'](arg1);
 }
 
+export function InsertOrUpdateNewTrackedProcessImage(arg1, arg2) {
+  return window['go']['procsDal']['ProcsDal']['InsertOrUpdateNewTrackedProcessImage'](arg1, arg2);
+}
+
 export function OpenDatabase() {
   return window['go']['procsDal']['ProcsDal']['OpenDatabase']();
 }
 
 export function SetContext(arg1) {
   return window['go']['procsDal']['ProcsDal']['SetContext'](arg1);
+}
+
+export function UpdateTrackedProcessName(arg1) {
+  return window['go']['procsDal']['ProcsDal']['UpdateTrackedProcessName'](arg1);
 }

@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 interface processInfo extends procs.BaseProcess {
     image: string | null;
+    refresh: Function;
 }
 
 function ProcessCard({
@@ -14,6 +15,7 @@ function ProcessCard({
     startAt,
     endAt,
     ended,
+    refresh,
 }: processInfo) {
     const [trackedMessage, setTrackedMessage] = useState('');
 
@@ -30,7 +32,8 @@ function ProcessCard({
 
         setTimeout(() => {
             setTrackedMessage('');
-        }, 2000);
+            refresh();
+        }, 1500);
     }
 
     return (

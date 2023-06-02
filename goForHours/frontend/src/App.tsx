@@ -103,6 +103,7 @@ function App() {
                             return (
                                 <ProcessCard
                                     {...obj}
+                                    refresh={GetRunningProcesses}
                                     image={gopher}
                                     convertValues={() => {}}
                                     key={obj.displayName}
