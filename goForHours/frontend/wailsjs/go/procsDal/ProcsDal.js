@@ -14,6 +14,10 @@ export function GetAllTrackedProcess() {
   return window['go']['procsDal']['ProcsDal']['GetAllTrackedProcess']();
 }
 
+export function GetTrackedProcessImage(arg1) {
+  return window['go']['procsDal']['ProcsDal']['GetTrackedProcessImage'](arg1);
+}
+
 export function InsertNewTrackedProcess(arg1) {
   return window['go']['procsDal']['ProcsDal']['InsertNewTrackedProcess'](arg1);
 }
@@ -30,6 +34,10 @@ export function SetContext(arg1) {
   return window['go']['procsDal']['ProcsDal']['SetContext'](arg1);
 }
 
-export function UpdateTrackedProcessName(arg1) {
-  return window['go']['procsDal']['ProcsDal']['UpdateTrackedProcessName'](arg1);
+export function StopTrackingProcess(arg1) {
+  return window['go']['procsDal']['ProcsDal']['StopTrackingProcess'](arg1);
+}
+
+export function UpdateTrackedProcessName(arg1, arg2) {
+  return window['go']['procsDal']['ProcsDal']['UpdateTrackedProcessName'](arg1, arg2);
 }

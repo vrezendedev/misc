@@ -67,6 +67,20 @@ export namespace procsDal {
 	        this.stillRunning = source["stillRunning"];
 	    }
 	}
+	export class TrackedProcessesImages {
+	    name: string;
+	    image: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new TrackedProcessesImages(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.image = source["image"];
+	    }
+	}
 
 }
 

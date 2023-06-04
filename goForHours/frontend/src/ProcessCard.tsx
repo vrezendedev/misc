@@ -1,15 +1,18 @@
-import './style.css';
-import { InsertNewTrackedProcess } from '../wailsjs/go/procsDal/ProcsDal';
+import { useEffect, useState } from 'react';
+import {
+    InsertNewTrackedProcess,
+    GetTrackedProcessImage,
+} from '../wailsjs/go/procsDal/ProcsDal';
 import { procs, procsDal } from '../wailsjs/go/models';
-import { useState } from 'react';
+
+import './style.css';
+import gopher from './gopher.png';
 
 interface processInfo extends procs.BaseProcess {
-    image: string | null;
     refresh: Function;
 }
 
 function ProcessCard({
-    image,
     name,
     displayName,
     startAt,
@@ -17,6 +20,7 @@ function ProcessCard({
     ended,
     refresh,
 }: processInfo) {
+    const [image, setImage] = useState<string | null>(null);
     const [trackedMessage, setTrackedMessage] = useState('');
 
     async function Track() {
@@ -36,11 +40,29 @@ function ProcessCard({
         }, 1500);
     }
 
+    useEffect(() => {
+        const getImage = async () => {
+            setImage(
+                await GetTrackedProcessImage(name).then((res) =>
+                    res.image != '' ? res.image : null
+                )
+            );
+        };
+        getImage();
+    }, []);
+
     return (
         <div className="card">
             <div className="card-image-div">
-                {image != null ? (
-                    <img src={image} className="card-image" />
+                {image != '' ? (
+                    <img
+                        src={
+                            image != null
+                                ? `data:image/png;base64,${image}`
+                                : gopher
+                        }
+                        className="card-image"
+                    />
                 ) : (
                     ''
                 )}

@@ -9,12 +9,16 @@ export function CreateOrLoadDatabase():Promise<void>;
 
 export function GetAllTrackedProcess():Promise<Array<procsDal.TrackedProcess>>;
 
+export function GetTrackedProcessImage(arg1:string):Promise<procsDal.TrackedProcessesImages>;
+
 export function InsertNewTrackedProcess(arg1:procsDal.TrackedProcess):Promise<boolean>;
 
-export function InsertOrUpdateNewTrackedProcessImage(arg1:string,arg2:Array<number>):Promise<boolean>;
+export function InsertOrUpdateNewTrackedProcessImage(arg1:string,arg2:string):Promise<boolean>;
 
 export function OpenDatabase():Promise<void>;
 
 export function SetContext(arg1:context.Context):Promise<void>;
 
-export function UpdateTrackedProcessName(arg1:procsDal.TrackedProcess):Promise<boolean>;
+export function StopTrackingProcess(arg1:string):Promise<boolean>;
+
+export function UpdateTrackedProcessName(arg1:string,arg2:string):Promise<boolean>;

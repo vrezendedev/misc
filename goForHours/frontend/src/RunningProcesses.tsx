@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
-import { GetAllTrackedProcess } from '../wailsjs/go/procsDal/ProcsDal';
+import {
+    GetAllTrackedProcess,
+    GetTrackedProcessImage,
+} from '../wailsjs/go/procsDal/ProcsDal';
 import { GetProcesses, VerifyProcessesState } from '../wailsjs/go/procs/Procs';
 
 import { procs, procsDal } from '../wailsjs/go/models';
@@ -10,6 +13,8 @@ import './style.css';
 import gopher from './gopher.png';
 
 function App() {
+    const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
+    const [timerTick, setTimerTick] = useState<number>(5);
     const [processes, setProcesses] = useState<Array<procs.BaseProcess>>(
         new Array<procs.BaseProcess>()
     );
@@ -22,12 +27,11 @@ function App() {
             if (alreadyTracked != null) {
                 result = result.filter((obj) => {
                     let found = alreadyTracked.some(
-                        (element) => element.displayName == obj.displayName
+                        (element) => element.name == obj.name
                     );
                     return found ? null : obj;
                 });
             }
-
             setProcesses(result);
         });
     }
@@ -60,6 +64,24 @@ function App() {
         GetRunningProcesses();
     }, []);
 
+    useEffect(() => {
+        const intervalID = setInterval(() => {
+            if (autoRefresh) {
+                GetRunningProcesses();
+            }
+        }, 5000);
+
+        const intervalIDTimer = setInterval(() => {
+            setTimerTick((oldVal) => oldVal - 1);
+        }, 1000);
+
+        return () => {
+            setTimerTick(5);
+            clearInterval(intervalID);
+            clearInterval(intervalIDTimer);
+        };
+    }, [processes, autoRefresh]);
+
     function DisplayRunningProcesses() {
         return (
             <div className="cards-div">
@@ -75,7 +97,12 @@ function App() {
                             onChange={(obj) => setFilter(obj.target.value)}
                         ></input>
                     </div>
-                    <div style={{ marginRight: '40px' }}>
+                    <div
+                        style={{
+                            position: 'relative',
+                            left: '-2.8%',
+                        }}
+                    >
                         <button
                             className="buttons"
                             onClick={async () => {
@@ -89,6 +116,15 @@ function App() {
                             onClick={async () => await VerifyRunningState()}
                         >
                             Force Refresh State from Processes List!
+                        </button>
+                        <button
+                            style={{ whiteSpace: 'pre-line' }}
+                            className="buttons"
+                            onClick={() => setAutoRefresh((val) => !val)}
+                        >
+                            {autoRefresh
+                                ? `Refresh in ${timerTick} s \n (Click here to disable!)`
+                                : 'Click and enable auto refresh!'}
                         </button>
                     </div>
                 </div>
@@ -104,7 +140,6 @@ function App() {
                                 <ProcessCard
                                     {...obj}
                                     refresh={GetRunningProcesses}
-                                    image={gopher}
                                     convertValues={() => {}}
                                     key={obj.displayName}
                                 />
@@ -115,15 +150,7 @@ function App() {
         );
     }
 
-    return (
-        <div id="App">
-            <div>
-                <div className="running-processes">
-                    {DisplayRunningProcesses()}
-                </div>
-            </div>
-        </div>
-    );
+    return <div className="running-processes">{DisplayRunningProcesses()}</div>;
 }
 
 export default App;

@@ -19,6 +19,11 @@ type TrackedProcess struct {
 	StillRunning bool   `json:"stillRunning"`
 }
 
+type TrackedProcessesImages struct {
+	Name  string `json:"name"`
+	Image string `json:"image"`
+}
+
 type ProcsDal struct {
 	ctx          context.Context
 	DATABASE_CTX *sql.DB
@@ -69,7 +74,7 @@ func (p *ProcsDal) CreateOrLoadDatabase() {
 	if err == nil {
 		statement, _ := database.Prepare("CREATE TABLE IF NOT EXISTS tracked_processes (name text primary key, displayName text, minutesOn UNSIGNED BIG INT, updatedAt text, stillRunning boolean)")
 		statement.Exec()
-		statement, _ = database.Prepare("CREATE TABLE IF NOT EXISTS tracked_processes_images (name text PRIMARY KEY, image blob);")
+		statement, _ = database.Prepare("CREATE TABLE IF NOT EXISTS tracked_processes_images (name text PRIMARY KEY, image text);")
 		statement.Exec()
 	}
 
@@ -93,7 +98,7 @@ func (p *ProcsDal) InsertNewTrackedProcess(tracked TrackedProcess) bool {
 }
 
 func (p *ProcsDal) GetAllTrackedProcess() []TrackedProcess {
-	rows, _ := p.DATABASE_CTX.Query("SELECT * FROM tracked_processes")
+	rows, _ := p.DATABASE_CTX.Query("SELECT * FROM tracked_processes ORDER BY displayname")
 
 	var trackedProcesses []TrackedProcess
 
@@ -108,9 +113,10 @@ func (p *ProcsDal) GetAllTrackedProcess() []TrackedProcess {
 	return trackedProcesses
 }
 
-func (p *ProcsDal) UpdateTrackedProcessName(tp TrackedProcess) bool {
+func (p *ProcsDal) UpdateTrackedProcessName(displayName string, name string) bool {
 	statement, _ := p.DATABASE_CTX.Prepare("UPDATE tracked_processes SET displayname = ? WHERE name = ?")
-	_, err := statement.Exec(tp.DisplayName, tp.Name)
+	fmt.Println(displayName, name)
+	_, err := statement.Exec(displayName, name)
 
 	if err != nil {
 		return false
@@ -119,16 +125,39 @@ func (p *ProcsDal) UpdateTrackedProcessName(tp TrackedProcess) bool {
 	}
 }
 
-func (p *ProcsDal) InsertOrUpdateNewTrackedProcessImage(appName string, image []byte) bool {
-	statement, _ := p.DATABASE_CTX.Prepare("DELETE FROM tracked_processes_images WHERE name = ?")
-	statement.Exec(appName)
-
-	statement, _ = p.DATABASE_CTX.Prepare("INSERT INTO tracked_processes_images (name, image) VALUES (?, ?)")
-	_, err := statement.Exec(appName, image)
+func (p *ProcsDal) StopTrackingProcess(name string) bool {
+	statement, _ := p.DATABASE_CTX.Prepare("DELETE FROM tracked_processes WHERE name = ?")
+	_, err := statement.Exec(name)
 
 	if err != nil {
 		return false
 	} else {
 		return true
 	}
+}
+
+func (p *ProcsDal) InsertOrUpdateNewTrackedProcessImage(name string, image string) bool {
+	statement, _ := p.DATABASE_CTX.Prepare("DELETE FROM tracked_processes_images WHERE name = ?")
+	statement.Exec(name)
+
+	statement, _ = p.DATABASE_CTX.Prepare("INSERT INTO tracked_processes_images (name, image) VALUES (?, ?)")
+	_, err := statement.Exec(name, image)
+
+	if err != nil {
+		return false
+	} else {
+		return true
+	}
+}
+
+func (p *ProcsDal) GetTrackedProcessImage(name string) TrackedProcessesImages {
+	rows, _ := p.DATABASE_CTX.Query("SELECT * FROM tracked_processes_images WHERE name = ?", name)
+
+	var row TrackedProcessesImages
+
+	for rows.Next() {
+		rows.Scan(&row.Name, &row.Image)
+	}
+
+	return row
 }

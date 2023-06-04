@@ -21,6 +21,84 @@
     padding: 0;
 }
 
+.tracked-processes {
+    margin-left: 50px;
+    width: 620px;
+    height: 700px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.tracked-div {
+    position: absolute;
+    height: 705px;
+    width: 630px;
+    padding: 2px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    justify-content: center;
+    align-items: center;
+}
+
+.tracked-proc {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    margin-left: 5px;
+    align-items: center;
+
+    width: 600px;
+    height: 150px;
+
+    background: rgb(83, 43, 112);
+    background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0.3) 100%
+    );
+
+    border-left: 5px solid black;
+    border-bottom: 3px solid;
+    border-image: linear-gradient(0.25turn, black 40%, var(--dark_purple) 90%);
+    border-image-slice: 1;
+
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    line-height: 0.2rem;
+    color: white;
+    margin-right: 30px;
+    word-wrap: break-word;
+}
+
+.title-card {
+    font-size: 1.75rem;
+    line-height: 0.4rem;
+    width: 250px;
+    color: white;
+    background-color: transparent;
+    border: none;
+}
+
+.tracked-proc-image {
+    position: block;
+    height: 100px;
+    width: 150px;
+    object-fit: contain;
+}
+
+.tracked-proc-info {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    margin: 0;
+}
+
+.card-options {
+    width: 100px;
+    margin: 0;
+}
+
 .running-processes {
     width: 650px;
     height: 700px;
@@ -36,7 +114,7 @@
     flex-wrap: wrap;
     position: absolute;
     height: 705px;
-    width: 683px;
+    width: 670px;
     padding: 2px;
     overflow-y: scroll;
     justify-content: center;
@@ -50,7 +128,7 @@
     height: 50px;
     width: 200px;
     position: absolute;
-    top: 0.5%;
+    top: 1%;
     left: 60%;
 }
 
@@ -171,6 +249,8 @@
 .card-image {
     height: 50px;
     width: 50px;
+    margin-left: 15px;
+    object-fit: contain;
     filter: drop-shadow(5px 2px 3px rgba(0, 0, 0, 1));
 }
 

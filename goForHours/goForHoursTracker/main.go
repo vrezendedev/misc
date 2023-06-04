@@ -2,10 +2,10 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"os"
 	"strings"
-
-	"fmt"
+	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/shirou/gopsutil/v3/process"
@@ -39,20 +39,30 @@ func main() {
 	processes, _ := process.Processes()
 
 	for _, trackedProc := range trackedProcesses {
+		found := false
 		for _, proc := range processes {
 			var name, _ = proc.Name()
 			if trackedProc.Name == name {
-				UpdateTrackedProcess(database, trackedProc.Name)
+				found = true
 				break
 			}
 		}
+
+		UpdateTrackedProcess(database, trackedProc.Name, found)
 	}
 
 }
 
-func UpdateTrackedProcess(database *sql.DB, name string) {
-	statement, _ := database.Prepare("UPDATE tracked_processes SET minuteson = minuteson + 1 WHERE name = ?")
-	_, err := statement.Exec(name)
+func UpdateTrackedProcess(database *sql.DB, name string, stillRunning bool) {
+	var err error
+
+	if stillRunning {
+		statement, _ := database.Prepare("UPDATE tracked_processes SET minuteson = minuteson + 1, stillrunning = ?, updatedat = ? WHERE name = ?")
+		_, err = statement.Exec(stillRunning, time.Now().Local().String(), name)
+	} else {
+		statement, _ := database.Prepare("UPDATE tracked_processes SET stillrunning = ? WHERE name = ?")
+		_, err = statement.Exec(stillRunning, name)
+	}
 
 	if err != nil {
 		fmt.Println(err.Error())
