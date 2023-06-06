@@ -41,6 +41,12 @@ function TrackedProcesses() {
 
     async function GetAlreadyTrackedComplete() {
         var trackedProcesses = await GetAllTrackedProcess();
+
+        if (trackedProcesses == null) {
+            setTrackedProcessesComplete(new Array<TrackedProcessesComplete>());
+            return;
+        }
+
         let trackedProcessesWithImage: Array<TrackedProcessesComplete> =
             await Promise.all(
                 trackedProcesses.map(async (element) => {
